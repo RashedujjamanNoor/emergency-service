@@ -1,9 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
   let initialCoins = 100;
+  let totalHearts = 0;
   const coinDisplay = document.querySelector("[data-coin]");
   const callButtons = document.querySelectorAll(".call-button");
   const historyContainer = document.getElementById("call-history");
   const clearHistoryBtn = document.getElementById("clear-history");
+  const heartIcons = document.querySelectorAll(".heart");
+  const heartCountDisplay = document.getElementById("heart-count");
 
   // Update coin display
   function updateCoinDisplay() {
@@ -56,6 +59,15 @@ document.addEventListener("DOMContentLoaded", () => {
     addToHistory(serviceName, number);
   }
 
+  // Handle heart icon click - increment count next to heart
+  function handleHeartClick(event) {
+    const heart = event.currentTarget;
+    const countSpan = heart.nextElementSibling;
+    let count = parseInt(countSpan.textContent, 10) || 0;
+    count++;
+    countSpan.textContent = count;
+  }
+
   // Attach event listeners to all call buttons
   callButtons.forEach((button) => {
     button.addEventListener("click", handleCallClick);
@@ -68,6 +80,26 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Update the displayed heart count
+  function updateHeartDisplay() {
+    if (heartCountDisplay) {
+      heartCountDisplay.textContent = totalHearts;
+    }
+  }
+
+  // Handle heart icon click
+  function handleHeartClick(event) {
+    totalHearts++;
+    updateHeartDisplay();
+  }
+
+  // Attach click listeners to all heart icons
+  heartIcons.forEach((heart) => {
+    heart.style.cursor = "pointer";
+    heart.addEventListener("click", handleHeartClick);
+  });
+
   // Initialize coin display
   updateCoinDisplay();
+  updateHeartDisplay();
 });
